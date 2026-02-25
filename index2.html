@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Hostel Booking Portal</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-wrapper">
+            <div class="brand">
+                <img src="university-bg.png" alt="University Logo" class="logo-img">
+                <div class="brand-text">
+                    <h1>University Hostel Portal</h1>
+                    <p>Accommodation Management System</p>
+                </div>
+            </div>
+            <div class="user-section">
+                <span id="user-welcome" class="hidden">Welcome, <strong id="user-name-display"></strong></span>
+                <button id="btn-login" class="header-btn">Login</button>
+                <button id="btn-register" class="header-btn secondary">Register</button>
+                <button id="btn-logout" class="header-btn danger hidden">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="main-tabs">
+        <button class="tab-button active" data-tab="dashboard">
+            <span class="tab-icon">🏠</span>
+            <span>Dashboard</span>
+        </button>
+        <button class="tab-button" data-tab="hostels">
+            <span class="tab-icon">🏢</span>
+            <span>Hostels</span>
+        </button>
+        <button class="tab-button" data-tab="rooms">
+            <span class="tab-icon">🛏️</span>
+            <span>Available Rooms</span>
+        </button>
+        <button class="tab-button" data-tab="bookings">
+            <span class="tab-icon">📋</span>
+            <span>My Bookings</span>
+        </button>
+        <button class="tab-button admin-only hidden" data-tab="management">
+            <span class="tab-icon">⚙️</span>
+            <span>Management</span>
+        </button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+        <!-- DASHBOARD TAB -->
+        <section id="dashboard-tab" class="content-tab active">
+            <div class="welcome-banner">
+                <h2>Welcome to University Hostel Booking Portal</h2>
+                <p>Find and book your ideal accommodation on campus</p>
+            </div>
+
+            <div class="quick-stats">
+                <div class="stat-card blue">
+                    <div class="stat-number" id="total-hostels">4</div>
+                    <div class="stat-label">Total Hostels</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-number" id="available-rooms">0</div>
+                    <div class="stat-label">Rooms Available</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-number" id="starting-price">₹3000</div>
+                    <div class="stat-label">Starting From</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-number" id="my-bookings-count">0</div>
+                    <div class="stat-label">My Bookings</div>
+                </div>
+            </div>
+
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>🎓 About Our Hostels</h3>
+                    <p>We provide safe, comfortable, and affordable accommodation for students. All hostels are equipped with modern amenities including Wi-Fi, mess facilities, study rooms, and 24/7 security.</p>
+                </div>
+                <div class="info-card">
+                    <h3>✅ Easy Booking Process</h3>
+                    <p>1. Browse available rooms → 2. Select your preferred hostel and room type → 3. Submit booking request → 4. Wait for admin approval → 5. Move in!</p>
+                </div>
+                <div class="info-card">
+                    <h3>💡 Room Types Available</h3>
+                    <p>We offer various sharing options: 2-sharing, 4-sharing, 5-sharing, 8-sharing, 12-sharing, and 15-sharing rooms with different price ranges to suit your budget.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOSTELS TAB -->
+        <section id="hostels-tab" class="content-tab">
+            <h2 class="section-heading">Our Hostels</h2>
+            <div class="hostels-grid" id="hostels-container">
+                <!-- Dynamically loaded -->
+            </div>
+        </section>
+
+        <!-- ROOMS TAB -->
+        <section id="rooms-tab" class="content-tab">
+            <h2 class="section-heading">Browse Available Rooms</h2>
+            
+            <div class="filter-panel">
+                <select id="filter-hostel" class="filter-select">
+                    <option value="all">All Hostels</option>
+                    <option value="H1">Hostel 1 - North Wing</option>
+                    <option value="H2">Hostel 2 - East Wing</option>
+                    <option value="H3">Hostel 3 - South Wing</option>
+                    <option value="H4">Hostel 4 - West Wing</option>
+                </select>
+
+                <select id="filter-type" class="filter-select">
+                    <option value="all">All Types</option>
+                    <option value="boys">Boys Hostel</option>
+                    <option value="girls">Girls Hostel</option>
+                </select>
+
+                <select id="filter-sharing" class="filter-select">
+                    <option value="all">All Sharing</option>
+                    <option value="2">2 Sharing</option>
+                    <option value="4">4 Sharing</option>
+                    <option value="5">5 Sharing</option>
+                    <option value="8">8 Sharing</option>
+                    <option value="12">12 Sharing</option>
+                    <option value="15">15 Sharing</option>
+                </select>
+
+                <button class="apply-filter-btn" onclick="filterRooms()">Apply Filters</button>
+                <button class="reset-filter-btn" onclick="resetFilters()">Reset</button>
+            </div>
+
+            <div class="rooms-container" id="rooms-container">
+                <!-- Dynamically loaded -->
+            </div>
+        </section>
+
+        <!-- BOOKINGS TAB -->
+        <section id="bookings-tab" class="content-tab">
+            <h2 class="section-heading">My Bookings</h2>
+            <div id="my-bookings-container">
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>No Bookings Yet</h3>
+                    <p>You haven't made any booking requests. Browse available rooms to get started.</p>
+                    <button class="cta-button" onclick="switchTab('rooms')">Browse Rooms</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MANAGEMENT TAB (Admin Only) -->
+        <section id="management-tab" class="content-tab">
+            <h2 class="section-heading">Admin Management Panel</h2>
+            
+            <div class="admin-stats-row">
+                <div class="admin-stat-box">
+                    <h4>Total Rooms</h4>
+                    <div class="big-number" id="admin-total">0</div>
+                </div>
+                <div class="admin-stat-box">
+                    <h4>Occupied</h4>
+                    <div class="big-number" id="admin-occupied">0</div>
+                </div>
+                <div class="admin-stat-box">
+                    <h4>Pending Requests</h4>
+                    <div class="big-number" id="admin-pending">0</div>
+                </div>
+                <div class="admin-stat-box">
+                    <h4>Available</h4>
+                    <div class="big-number" id="admin-available">0</div>
+                </div>
+            </div>
+
+            <div class="management-section">
+                <h3>Pending Booking Requests</h3>
+                <div class="requests-table-wrapper">
+                    <table class="requests-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student</th>
+                                <th>Email</th>
+                                <th>Hostel</th>
+                                <th>Room</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requests-table-body">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 2rem; color: #999;">
+                                    No pending requests
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="management-section">
+                <h3>Hostel Wise Occupancy</h3>
+                <div id="hostel-occupancy-chart" class="occupancy-chart">
+                    <!-- Dynamically loaded -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('login-modal')">&times;</button>
+            <h2>Student/Admin Login</h2>
+            <form id="form-login">
+                <div class="input-group">
+                    <label>Username or Email</label>
+                    <input type="text" id="input-login-user" placeholder="Enter username" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="input-login-pass" placeholder="Enter password" required>
+                </div>
+                <div class="input-group">
+                    <label>Login Type</label>
+                    <select id="input-login-role" required>
+                        <option value="student">Student</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                <button type="submit" class="modal-submit-btn">Login</button>
+            </form>
+            <p class="modal-footer-text">
+                Don't have an account? <a href="#" onclick="switchModal('register-modal')">Register here</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('register-modal')">&times;</button>
+            <h2>Student Registration</h2>
+            <form id="form-register">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="input-reg-name" placeholder="John Doe" required>
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="input-reg-email" placeholder="john@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="input-reg-phone" placeholder="1234567890" required>
+                </div>
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" id="input-reg-username" placeholder="Choose username" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="input-reg-password" placeholder="Create password" required>
+                </div>
+                <button type="submit" class="modal-submit-btn">Register</button>
+            </form>
+            <p class="modal-footer-text">
+                Already have an account? <a href="#" onclick="switchModal('login-modal')">Login here</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Booking Confirmation Modal -->
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('confirm-modal')">&times;</button>
+            <h2>Confirm Booking</h2>
+            <div id="booking-details-summary">
+                <!-- Filled dynamically -->
+            </div>
+            <div class="modal-actions">
+                <button class="confirm-btn" onclick="submitBooking()">Confirm & Submit</button>
+                <button class="cancel-btn" onclick="closeModal('confirm-modal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="page-footer">
+        <p>&copy; 2024 University Hostel Portal. All Rights Reserved.</p>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
